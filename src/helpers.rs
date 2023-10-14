@@ -5,6 +5,12 @@
 
 use std::num::ParseIntError;
 
+use nom::{IResult, combinator::map_res, bytes::complete::take_while1, Parser};
+
+pub fn parse_u32(input: &str) -> IResult<&str, u32> {
+    map_res(take_while1(is_char_digit), str_to_u32).parse(input)
+}
+
 pub fn str_to_u32(input: &str) -> Result<u32, ParseIntError> {
     u32::from_str_radix(input, 10)
 }
